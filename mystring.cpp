@@ -108,13 +108,14 @@ void My_string::add_char(const char & insert_char)
 	splay(temp_pointer, nullptr);
 }
 
-char * My_string::c_str()
+char * My_string::c_str() const
 {
 	stack<string_node_pointer> st;
 
-	char* temp_s = new char[length()+1];
+	int __length = __root_node->size();
 
-	cout << length() << endl;
+	char* temp_s = new char[__length+1];
+
 
 	memset(temp_s, '\0', sizeof(char));
 	int counter = 0;
@@ -136,9 +137,11 @@ char * My_string::c_str()
 			current_node = current_node->right();
 		}
 	}
-	temp_s[length()] = '\0';
+	temp_s[__length] = '\0';
 	return temp_s;
 }
+
+void My_string
 
 void My_string::test()
 {
@@ -149,6 +152,7 @@ void My_string::test()
  
 	puts(c_str());
 }
+
 
 
 int main()

@@ -3,6 +3,8 @@
 
 #define string_node_pointer My_string_node*
 
+#include<iostream>
+
 typedef unsigned int size_type;
 
 #define DEBUG
@@ -56,13 +58,16 @@ class My_string {
 public:
 
 	My_string();
+	
+	My_string& operator = (const char*& c_string);
 
 	void rotate(string_node_pointer current_node);
 	void splay(string_node_pointer current_node, string_node_pointer splay_position);
 	inline size_type length() { return __root_node->size(); }
 	void add_char(const char& insert_char);
 
-	char* c_str();
+
+	char* c_str() const;
 
 #ifdef DEBUG
 
