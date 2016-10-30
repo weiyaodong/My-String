@@ -33,7 +33,7 @@ public:
 
 	inline void update()
 	{
-		__size = is_special();
+		__size = !is_special();
 		if (__left_node != nullptr) __size += __left_node->size();
 		if (__right_node != nullptr)__size += __right_node->size();
 	}

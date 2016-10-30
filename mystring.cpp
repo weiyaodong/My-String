@@ -103,6 +103,8 @@ void My_string::add_char(const char & insert_char)
 	string_node_pointer temp_pointer = new_string_node(insert_char);
 	__root_node->right()->set_left(temp_pointer);
 	temp_pointer->set_father(__root_node->right());
+	__root_node->right()->update();
+	__root_node->update();
 	splay(temp_pointer, nullptr);
 }
 
@@ -110,8 +112,11 @@ char * My_string::c_str()
 {
 	stack<string_node_pointer> st;
 
-	char* temp_s = new char[length()];
-	memset(temp_s, 0, sizeof(char));
+	char* temp_s = new char[length()+1];
+
+	cout << length() << endl;
+
+	memset(temp_s, '\0', sizeof(char));
 	int counter = 0;
 	string_node_pointer current_node = __root_node;
 
@@ -131,6 +136,7 @@ char * My_string::c_str()
 			current_node = current_node->right();
 		}
 	}
+	temp_s[length()] = '\0';
 	return temp_s;
 }
 
@@ -140,8 +146,8 @@ void My_string::test()
 	add_char('a');
 	add_char('d');
 	add_char('s');
-	char *c = c_str();
-	puts(c);
+ 
+	puts(c_str());
 }
 
 
