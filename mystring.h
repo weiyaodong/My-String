@@ -26,7 +26,7 @@ public:
 	inline void set_head() { __is_head = true; __size = 0; }
 	inline void set_tail() { __is_tail = true; __size = 0; }
 	
-	inline size_type size() { return __size; }
+	inline size_type size() const { return __size; }
 
 	inline char c()const { return __char; }
 	inline void set_char(const char& temp_c) { __char = temp_c; }
@@ -58,14 +58,20 @@ class My_string {
 public:
 
 	My_string();
-	
-	My_string& operator = (const char*& c_string);
+	My_string& operator = (const My_string& copy_string);
+	My_string& operator = (char* c_string);
 
+	void clear();
 	void rotate(string_node_pointer current_node);
 	void splay(string_node_pointer current_node, string_node_pointer splay_position);
-	inline size_type length() { return __root_node->size(); }
+	inline size_type length() const { return __root_node->size(); }
 	void add_char(const char& insert_char);
 
+	My_string operator + (const char& add_char) const;
+	My_string operator + (char * c_string)const ;
+	My_string operator + (const My_string & add_string) const;
+
+	inline string_node_pointer& root() { return __root_node; }
 
 	char* c_str() const;
 

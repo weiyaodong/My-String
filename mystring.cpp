@@ -2,6 +2,7 @@
 
 #include <cstring>
 #include <iostream>
+#include <queue>
 #include <stack>
 
 using namespace std;
@@ -33,6 +34,66 @@ My_string::My_string()
 	__tail_node->set_father(__head_node);
 	__root_node = __head_node;
 
+}
+
+My_string & My_string::operator=(const My_string & copy_string)
+{
+	clear();	
+	return *this = copy_string.c_str();
+}
+
+My_string & My_string::operator = (char * c_string)
+{
+	clear();
+
+	string_node_pointer* pointers;
+	int __length = strlen(c_string);
+	pointers = new string_node_pointer[__length+2];
+	pointers[0] = new_string_node();
+	pointers[0]->set_head();
+	__root_node = __head_node = pointers[0];
+	pointers[__length + 1] = new_string_node();
+	pointers[__length + 1]->set_tail();
+	__tail_node = pointers[__length + 1];
+	for (int i = 1; i <= __length; i++)
+	{
+		pointers[i] = new_string_node(c_string[i - 1]);
+	}
+	for (int i = 0; i <= __length; i++)
+	{
+		pointers[i]->set_right(pointers[i + 1]);
+		pointers[i + 1]->set_father(pointers[i]);
+	}
+	
+	splay(__tail_node, nullptr);
+	delete pointers;
+	return *this;
+}
+
+void My_string::clear()
+{
+	queue<string_node_pointer> q;
+	q.push(__root_node);
+	while (!q.empty())
+	{		
+		string_node_pointer temp_pointer = q.front(); q.pop();
+
+		if (temp_pointer == nullptr)
+			continue;
+
+		string_node_pointer temp_left = temp_pointer->left();
+		string_node_pointer temp_right = temp_pointer->right();
+		delete temp_pointer;
+		if (temp_left != nullptr)
+		{
+			q.push(temp_left);
+		}
+		if (temp_right != nullptr)
+		{
+			q.push(temp_right);
+		}
+	}
+	__head_node = __tail_node = __root_node = nullptr;
 }
 
 void My_string::rotate(string_node_pointer current_node)
@@ -108,6 +169,40 @@ void My_string::add_char(const char & insert_char)
 	splay(temp_pointer, nullptr);
 }
 
+My_string My_string::operator + (const char & add_char) const
+{
+	My_string temp_string;
+	char *str;
+	str = new char[this->length() + 2];
+	strcpy(str, c_str());
+	str[this->length()] = add_char;
+	str[this->length() + 1] = '\0';
+	temp_string = str;
+	delete str;
+	return temp_string;
+}
+
+My_string My_string::operator + (char* c_string) const
+{
+	My_string temp_string;
+	char *str;
+	size_type c_length = strlen(c_string);
+	str = new char[this->length() + c_length + 1];
+	strcpy(str, c_str());
+	strcpy(str + this->length(), c_string);
+	str[this->length() + c_length] = '\0';
+	temp_string = str;
+	delete str;
+	return temp_string;
+}
+
+My_string My_string::operator + (const My_string& add_string) const
+{
+	My_string temp_string = *this;
+	My_string temp_string2 = add_string;
+	// to be continued 
+}
+
 char * My_string::c_str() const
 {
 	stack<string_node_pointer> st;
@@ -141,8 +236,6 @@ char * My_string::c_str() const
 	return temp_s;
 }
 
-void My_string
-
 void My_string::test()
 {
 	add_char('c');
@@ -157,12 +250,19 @@ void My_string::test()
 
 int main()
 {
-	My_string str;
+	My_string str,str2;
 
 	int n;
 	cout << str.length() << endl;
 
 	str.test();
+
+	str = "string";
+	puts(str.c_str());
+	str2 = str;
+	puts(str2.c_str());
+	str = str2 + "string";
+	puts(str.c_str());
 
 	cin >> n;
 
