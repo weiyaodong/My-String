@@ -72,6 +72,7 @@ public:
 	My_string operator + (const My_string & add_string) const;
 
 	inline string_node_pointer& root() { return __root_node; }
+	char find_kth(const int& _k);
 
 	char* c_str() const;
 
@@ -92,6 +93,8 @@ private:
 		temp_pointer->set_char(temp_char);
 		return temp_pointer;
 	}
+
+	string_node_pointer find_kth_node(string_node_pointer current_node,const int& _k) const;
 
 	string_node_pointer __root_node;
 	string_node_pointer __head_node;

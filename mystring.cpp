@@ -203,6 +203,17 @@ My_string My_string::operator + (const My_string& add_string) const
 	// to be continued 
 }
 
+char My_string::find_kth(const int & _k)
+{
+	string_node_pointer target_node = find_kth_node(__root_node, _k);
+	if (target_node == nullptr)
+	{
+		return '\0';
+	}
+	splay(target_node, nullptr);
+	return target_node->c();
+}
+
 char * My_string::c_str() const
 {
 	stack<string_node_pointer> st;
@@ -244,6 +255,22 @@ void My_string::test()
 	add_char('s');
  
 	puts(c_str());
+}
+
+string_node_pointer My_string::find_kth_node(string_node_pointer current_node,const int & _k) const
+{
+	if (current_node->left() != nullptr && current_node->left()->size() >= _k)
+		return find_kth_node(current_node->left(), _k);
+	if (current_node->left() != nullptr && !current_node->is_special() && current_node->left()->size() == _k - 1)
+		return current_node;
+	int __left_size = current_node->left() == nullptr ? 0 : current_node->left()->size();
+	int __current_size = !current_node->is_special();
+	if (current_node->right() != nullptr)
+		return find_kth_node(current_node->right(), _k - __left_size - __current_size);
+	else
+	{
+		return nullptr;
+	}
 }
 
 
